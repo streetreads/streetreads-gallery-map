@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Street Gallery Map</title>
+    <meta charset="utf-8" />
+    <style>
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+
+    <script>
+      // =========================
+      // 1. SNAZZY MAP STYLE
+      // =========================
+      const mapStyle = [
+        {
+          featureType: "landscape",
+          elementType: "all",
+          stylers: [
+            { hue: "#6600ff" },
+            { saturation: -16 },
+            { visibility: "on" }
+          ]
+        },
+        {
+          featureType: "landscape.man_made",
+          elementType: "all",
+          stylers: [
+            { visibility: "on" },
+            { saturation: 0 },
+            { gamma: 0.7 }
+          ]
+        },
+        {
+          featureType: "poi",
+          elementType: "all",
+          stylers: [
+            { saturation: 27 },
+            { hue: "#3200ff" },
+            { lightness: 3 },
+            { visibility: "off" }
+          ]
+        },
+        {
+          featureType: "road",
+          elementType: "all",
+          stylers: [
+            { hue: "#6600ff" },
+            { saturation: -57 },
+            { lightness: -28 }
+          ]
+        },
+        {
+          featureType: "road.local",
+          elementType: "all",
+          stylers: [
+            { lightness: -45 },
+            { weight: 1.3 },
+            { color: "#6600ff" },
+            { saturation: -57 },
+            { gamma: 2.35 }
+          ]
+        },
+        {
+          featureType: "transit",
+          elementType: "all",
+          stylers: [
+            { visibility: "simplified" },
+            { hue: "#5e00ff" },
+            { saturation: -16 }
+          ]
+        },
+        {
+          featureType: "water",
+          elementType: "all",
+          stylers: [
+            { saturation: -65 },
+            { hue: "#1900ff" },
+            { lightness: 8 }
+          ]
+        }
+      ];
+
+      // =========================
+      // 2. GEOJSON DATA
+      // =========================
+      const geojson = {
+        type: "FeatureCollection",
+        features: [
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1602672, 55.955865] }, properties: { name: "Meadowbank Exhibit" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1606767, 55.9564659] }, properties: { name: "Wishaw Terrace Exhibit" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.2149218, 55.9418554] }, properties: { name: "Fountainbridge Exhibit" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1782013, 55.9506139] }, properties: { name: "StreetReads Library (Simon Community Scotland)" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1999135, 55.9485947] }, properties: { name: "Edinburgh Castle" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1725094, 55.9749314] }, properties: { name: "The Shore" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.165291, 55.9617787] }, properties: { name: "Easter Road Stadium" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1895371, 55.9530355] }, properties: { name: "The Balmoral Hotel" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1985488, 55.9509847] }, properties: { name: "Princes Street Gardens" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1618324, 55.9440825] }, properties: { name: "Arthur’s Seat" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.181679, 55.949176] }, properties: { name: "The Cowgate" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.2153571, 55.9171769] }, properties: { name: "Braidburn Valley Park" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.27246, 55.971451] }, properties: { name: "Silverknowes" } },
+          { type: "Feature", geometry: { type: "Point", coordinates: [-3.1888669, 55.9548131] }, properties: { name: "Saint James Centre" } }
+        ]
+      };
+
+      // =========================
+      // 3. INIT MAP
+      // =========================
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 55.9533, lng: -3.1883 },
+          zoom: 13,
+          styles: mapStyle
+        });
+
+        // Add GeoJSON data
+        map.data.addGeoJson(geojson);
+
+        // Simple popup interaction
+        const infoWindow = new google.maps.InfoWindow();
+
+        map.data.addListener("click", (event) => {
+          const name = event.feature.getProperty("name");
+
+          infoWindow.setContent(`<strong>${name}</strong>`);
+          infoWindow.setPosition(event.latLng);
+          infoWindow.open(map);
+        });
+      }
+    </script>
+
+    <!-- =========================
+         4. GOOGLE MAPS SCRIPT
+         ========================= -->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+    ></script>
+  </body>
+</html>
