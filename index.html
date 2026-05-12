@@ -113,6 +113,23 @@
         // Add GeoJSON data
         map.data.addGeoJson(geojson);
 
+        // CUSTOM MARKER STYLING
+  map.data.setStyle((feature) => {
+
+    const color = feature.getProperty("icon-color") || "#8B5CF6";
+
+    return {
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 8,
+        fillColor: color,
+        fillOpacity: 1,
+        strokeWeight: 2,
+        strokeColor: "#ffffff"
+      }
+    };
+  });
+
         // Simple popup interaction
         const infoWindow = new google.maps.InfoWindow();
 
